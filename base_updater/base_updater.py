@@ -87,11 +87,14 @@ def check_for_sql_files():
 
 def main():
     """Main loop checking for SQL files every 30 minutes"""
-    print("🚀 Base Updater Service Started")
-    print(f"📁 Update directory: {UPDATE_DIR} (exists: {UPDATE_DIR.exists()})")
-    print(f"📁 Processed directory: {PROCESSED_DIR} (exists: {PROCESSED_DIR.exists()})")
-    print(f"⏱️  Checking every 30 minutes...")
-    print(f"🔄 Waiting for database connection...")
+    # Force unbuffered output
+    sys.stdout.flush()
+    
+    print("🚀 Base Updater Service Started", flush=True)
+    print(f"📁 Update directory: {UPDATE_DIR} (exists: {UPDATE_DIR.exists()})", flush=True)
+    print(f"📁 Processed directory: {PROCESSED_DIR} (exists: {PROCESSED_DIR.exists()})", flush=True)
+    print(f"⏱️  Checking every 30 minutes...", flush=True)
+    print(f"🔄 Waiting for database connection...", flush=True)
     
     # Wait for database
     max_retries = 30
@@ -99,22 +102,23 @@ def main():
         try:
             conn = get_db_connection()
             conn.close()
-            print("✓ Database connection established")
+            print("✓ Database connection established", flush=True)
             break
-        except:
+        except Exception as e:
+            print(f"Attempt {i+1}/{max_retries}: {e}", flush=True)
             if i == max_retries - 1:
-                print("✗ Failed to connect to database after 30 retries")
+                print("✗ Failed to connect to database after 30 retries", flush=True)
                 sys.exit(1)
             time.sleep(2)
     
     # Initial check
-    print("\n📋 Initial check...")
+    print("\n📋 Initial check...", flush=True)
     check_for_sql_files()
     
     # Continuous monitoring
     while True:
         time.sleep(30 * 60)  # 30 minutes
-        print(f"\n⏰ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - Checking for updates...")
+        print(f"\n⏰ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - Checking for updates...", flush=True)
         check_for_sql_files()
 
 if __name__ == '__main__':
