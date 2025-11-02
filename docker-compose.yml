@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: sfdaily_postgres
+    environment:
+      POSTGRES_USER: sfdaily
+      POSTGRES_PASSWORD: sfdaily_pass
+      POSTGRES_DB: sfdaily
+    ports:
+      - "3052:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sfdaily_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sfdaily"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: sfdaily_backend
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://sfdaily:sfdaily_pass@database:5432/sfdaily
+      PORT: 3001
+    ports:
+      - "3051:3001"
+    networks:
+      - sfdaily_network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  frontend:
+    build: ./frontend
+    container_name: sfdaily_frontend
+    depends_on:
+      - backend
+    ports:
+      - "3050:3000"
+    networks:
+      - sfdaily_network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://backend:3001
+
+  base_updater:
+    build: ./base_updater
+    container_name: sfdaily_updater
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://sfdaily:sfdaily_pass@database:5432/sfdaily
+    volumes:
+      - ./database/sfdaily_update:/app/sfdaily_update
+      - ./database/sfdaily_processed:/app/sfdaily_processed
+    networks:
+      - sfdaily_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  sfdaily_network:
+    driver: bridge
+
