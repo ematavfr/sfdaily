@@ -65,7 +65,39 @@ sfdaily/
 
 ## Mise à jour des données
 
-Pour ajouter de nouveaux articles :
+### Méthode 1 : CLI Agent (Recommandé)
+
+Le CLI agent automatise le traitement des newsletters :
+
+```bash
+# Installer les dépendances
+cd backend
+npm install
+
+# Utiliser le CLI
+cd ..
+./sfdaily stats              # Afficher les statistiques
+./sfdaily list 2025-11-01    # Lister les articles d'une date
+./sfdaily delete 2025-11-01  # Supprimer les articles d'une date
+./sfdaily trigger-update     # Déclencher un update manuel
+```
+
+**Traiter une newsletter :**
+
+```bash
+# 1. Télécharger le HTML de la newsletter (via Gmail MCP par exemple)
+# 2. Traiter la newsletter
+./sfdaily process 2025-11-01 /path/to/newsletter.html
+
+# 3. Le fichier SQL est créé dans database/sfdaily_update/
+# 4. L'updater le traitera automatiquement (ou manuellement avec trigger-update)
+```
+
+Voir [mcp_server/README.md](mcp_server/README.md) pour plus de détails.
+
+### Méthode 2 : Fichier SQL manuel
+
+Pour ajouter de nouveaux articles manuellement :
 
 1. Placer le fichier SQL dans `database/sfdaily_update/`
 2. Le service base_updater va automatiquement :
@@ -74,7 +106,7 @@ Pour ajouter de nouveaux articles :
    - Déplacer le fichier vers `database/sfdaily_processed/`
    - Créer un fichier log correspondant
 
-## Format SQL
+### Format SQL
 
 Chaque fichier SQL doit respecter ce format :
 
@@ -84,13 +116,23 @@ CREATE TABLE IF NOT EXISTS articles (
     id SERIAL PRIMARY KEY,
     date DATE NOT NULL,
     title VARCHAR(500) NOT NULL,
-    summary_fr TEXT NOT NULL,
-    tags TEXT[] NOT NULL,
-    rating INTEGER DEFAULT 0 CHECK (rating >= 0 AND rating <= 5)
+    summary_fr TEXT,
+    tags TEXT[],
+    rating INTEGER DEFAULT 0 CHECK (rating >= 0 AND rating <= 5),
+    url TEXT
 );
 
 -- Insert articles
-INSERT INTO articles (date, title, summary_fr, tags, rating) VALUES (...);
+INSERT INTO articles (date, title, summary_fr, tags, rating, url) VALUES (...);
+```
+
+## Scripts utilitaires
+
+Des scripts Bash sont disponibles dans `scripts/` :
+
+```bash
+./scripts/sfdaily-delete-by-date.sh 2025-11-01  # Supprimer par date (avec confirmation)
+./scripts/sfdaily-trigger-update.sh              # Déclencher un update manuel
 ```
 
 ## Technologies
