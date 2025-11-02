@@ -4,7 +4,7 @@
  * Automates newsletter processing workflows
  * 
  * Usage:
- *   node sfdaily-cli.js process <date> <newsletter_html_file>
+ *   node sfdaily-cli.js process <date> [newsletter_html_file]
  *   node sfdaily-cli.js delete <date>
  *   node sfdaily-cli.js list [date]
  *   node sfdaily-cli.js stats
