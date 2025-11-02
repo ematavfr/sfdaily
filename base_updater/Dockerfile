@@ -7,5 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY base_updater.py .
 
-CMD ["python", "base_updater.py"]
+ENV PYTHONUNBUFFERED=1
+CMD ["python", "-u", "base_updater.py"]
 
