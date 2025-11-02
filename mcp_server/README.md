@@ -15,10 +15,12 @@ This will install `cheerio` and `axios` needed for HTML parsing.
 
 ## Usage
 
+⚠️ **Important** : Pour un traitement automatisé complet des newsletters (Gmail → Firecrawl → LLM → SQL), utilisez l'Agent MCP décrit dans [AGENT_GUIDE.md](../AGENT_GUIDE.md). Le CLI décrit ici est pour des opérations manuelles ou partielles.
+
 ### Option 1: Direct Command
 
 ```bash
-# Process a newsletter
+# Process a newsletter (manual HTML file required)
 node mcp_server/sfdaily-cli.js process 2025-11-01 /path/to/newsletter.html
 
 # Delete articles by date
@@ -92,6 +94,8 @@ docker exec sfdaily_backend node /app/../mcp_server/sfdaily-cli.js stats
 ## Commands Reference
 
 ### `process <date> <html_file>`
+
+⚠️ **Note** : Cette commande nécessite un fichier HTML manuel. Pour un traitement automatisé complet (Gmail → Firecrawl → LLM → SQL), utilisez plutôt l'agent MCP décrit dans [AGENT_GUIDE.md](../AGENT_GUIDE.md).
 
 Processes a newsletter HTML file and generates a SQL file for the articles.
 

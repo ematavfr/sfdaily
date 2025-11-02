@@ -85,13 +85,14 @@ cd ..
 **Traiter une newsletter :**
 
 ```bash
-# 1. Télécharger le HTML de la newsletter (via Gmail MCP par exemple)
-# 2. Traiter la newsletter
-./sfdaily process 2025-11-01 /path/to/newsletter.html
+# Affiche un guide interactif pour traiter avec Agent MCP
+./sfdaily process 2025-11-01
 
-# 3. Le fichier SQL est créé dans database/sfdaily_update/
-# 4. L'updater le traitera automatiquement (ou manuellement avec trigger-update)
+# Ou avec fichier HTML (traitement manuel partiel)
+./sfdaily process 2025-11-01 /path/to/newsletter.html
 ```
+
+⚠️ **Traitement automatisé complet** : Utilisez l'agent MCP dans Cursor (voir prompt dans le guide affiché ci-dessus ou [AGENT_GUIDE.md](AGENT_GUIDE.md)).
 
 Voir [mcp_server/README.md](mcp_server/README.md) pour plus de détails.
 

@@ -6,6 +6,13 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Special handling for 'process' command without HTML file
+if [ "$1" == "process" ] && [ -n "$2" ] && [ -z "$3" ]; then
+  # No HTML file provided, redirect to guide script
+  "${SCRIPT_DIR}/scripts/process-newsletter.sh" "$2"
+  exit 0
+fi
+
 # Check if running from backend container
 if command -v node &> /dev/null && [ -f "${SCRIPT_DIR}/mcp_server/sfdaily-cli.js" ]; then
   # Running locally or in container
