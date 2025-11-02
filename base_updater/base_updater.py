@@ -55,7 +55,26 @@ def move_to_processed(sql_file):
 
 def check_for_sql_files():
     """Check for new SQL files in update directory"""
+    # Debug: Check if directory exists
+    if not UPDATE_DIR.exists():
+        print(f"✗ Update directory does not exist: {UPDATE_DIR}")
+        return
+    
+    if not UPDATE_DIR.is_dir():
+        print(f"✗ Update path is not a directory: {UPDATE_DIR}")
+        return
+    
+    # List all files in directory for debugging
+    all_files = list(UPDATE_DIR.glob('*'))
+    print(f"🔍 Files in update directory: {len(all_files)}")
+    for f in all_files:
+        print(f"   - {f.name}")
+    
     sql_files = list(UPDATE_DIR.glob('*.sql'))
+    print(f"📊 Found {len(sql_files)} SQL file(s)")
+    
+    if len(sql_files) == 0:
+        print("   (No SQL files to process)")
     
     for sql_file in sql_files:
         print(f"\n📄 Processing: {sql_file.name}")
@@ -68,8 +87,8 @@ def check_for_sql_files():
 def main():
     """Main loop checking for SQL files every 30 minutes"""
     print("🚀 Base Updater Service Started")
-    print(f"📁 Update directory: {UPDATE_DIR}")
-    print(f"📁 Processed directory: {PROCESSED_DIR}")
+    print(f"📁 Update directory: {UPDATE_DIR} (exists: {UPDATE_DIR.exists()})")
+    print(f"📁 Processed directory: {PROCESSED_DIR} (exists: {PROCESSED_DIR.exists()})")
     print(f"⏱️  Checking every 30 minutes...")
     print(f"🔄 Waiting for database connection...")
     
