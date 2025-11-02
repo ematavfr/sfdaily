@@ -37,6 +37,12 @@ docker-compose up -d
 
 # Vérifier le statut
 docker-compose ps
+
+# Voir les logs du base_updater
+docker-compose logs -f base_updater
+
+# Voir tous les logs
+docker-compose logs -f
 ```
 
 L'application sera accessible sur :
