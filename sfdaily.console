@@ -1,0 +1,24 @@
+Uncaught (in promise) Error: Frame with ID 0 was removed.Understand this error
+3background.js:2 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'length')
+    at background.js:2:1011558
+    at async background.js:2:1011451Understand this error
+hook.js:608 Error fetching dates: AxiosError
+overrideMethod @ hook.js:608Understand this error
+backend:3001/api/dates:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+hook.js:608 Error fetching articles: AxiosError
+overrideMethod @ hook.js:608Understand this error
+backend:3001/api/articles/2025-11-01:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+hook.js:608 Error fetching dates: AxiosError
+overrideMethod @ hook.js:608Understand this error
+backend:3001/api/dates:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+hook.js:608 Error fetching articles: AxiosError
+overrideMethod @ hook.js:608Understand this error
+backend:3001/api/articles/2025-11-01:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+contentScript.bundle.js:1 Content script works!
+contentScript.bundle.js:1 Must reload extension for modifications to take effect.
+contentScript.bundle.js:1 ===> FROM THE PRINT MODULE: Using the 'printLine' function from the Print Module
+index.html:1 The resource https://apps.rokt.com/icons/rokt-icons.woff was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.Understand this warning
+index.html:1 The resource https://apps.rokt.com/icons/rokt-icons.woff was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.Understand this warning
+Refused to connect to 'https://sourcemaps-wsdk.roktinternal.com/controller/controller.2.6269.0.js.map' because it violates the following Content Security Policy directive: "connect-src 'self' https://apps.rokt.com https://apps-demo.rokt.com".
+Understand this error
+index.html:1 The resource https://apps.rokt.com/icons/rokt-icons.woff was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.

@@ -1,0 +1,24 @@
+#!/bin/bash
+# Self Daily CLI Wrapper
+# Provides convenient commands for newsletter processing
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Check if running from backend container
+if command -v node &> /dev/null && [ -f "${SCRIPT_DIR}/mcp_server/sfdaily-cli.js" ]; then
+  # Running locally or in container
+  NODE_PATH="${SCRIPT_DIR}/mcp_server"
+  node "${SCRIPT_DIR}/mcp_server/sfdaily-cli.js" "$@"
+else
+  # Try via docker exec in backend container
+  if docker ps | grep -q sfdaily_backend; then
+    docker exec sfdaily_backend node /app/../mcp_server/sfdaily-cli.js "$@"
+  else
+    echo "Error: Backend container not running"
+    echo "Start services with: docker-compose up -d"
+    exit 1
+  fi
+fi
+
