@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import shutil
 from pathlib import Path
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
@@ -37,9 +38,9 @@ def execute_sql_file(file_path):
 def move_to_processed(sql_file):
     """Move SQL file to processed directory and create log"""
     try:
-        # Move SQL file
+        # Move SQL file using shutil instead of rename for cross-device support
         processed_file = PROCESSED_DIR / sql_file.name
-        sql_file.rename(processed_file)
+        shutil.move(str(sql_file), str(processed_file))
         
         # Create log file
         log_file = PROCESSED_DIR / sql_file.name.replace('.sql', '.log')
