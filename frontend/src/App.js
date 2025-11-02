@@ -152,6 +152,11 @@ function App() {
         <div className="mb-6">
           <h2 className="text-2xl font-semibold text-brown-800">
             {formatDate(selectedDate)}
+            {!loading && articles.length > 0 && (
+              <span className="ml-3 text-lg font-normal text-brown-600">
+                ({articles.length} article{articles.length > 1 ? 's' : ''})
+              </span>
+            )}
           </h2>
         </div>
 
