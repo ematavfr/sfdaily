@@ -27,6 +27,11 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    fetchArticles();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate, filteredTag, filteredRating]);
+
   const fetchArticles = async () => {
     setLoading(true);
     try {
