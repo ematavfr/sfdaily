@@ -9,21 +9,11 @@ function App() {
   const [selectedDate, setSelectedDate] = useState('2025-11-01');
   const [filteredTag, setFilteredTag] = useState('');
   const [filteredRating, setFilteredRating] = useState('');
-  const [availableDates, setAvailableDates] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchDates();
-  }, []);
-
-  useEffect(() => {
-    fetchArticles();
-  }, [selectedDate, filteredTag, filteredRating]);
 
   const fetchDates = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/dates`);
-      setAvailableDates(response.data);
       if (response.data.length > 0 && !selectedDate) {
         setSelectedDate(response.data[0]);
       }
@@ -31,6 +21,11 @@ function App() {
       console.error('Error fetching dates:', error);
     }
   };
+
+  useEffect(() => {
+    fetchDates();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const fetchArticles = async () => {
     setLoading(true);
@@ -76,7 +71,6 @@ function App() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const options = { day: 'numeric', month: 'long', year: 'numeric', locale: 'fr-FR' };
     return date.toLocaleDateString('fr-FR', { 
       day: 'numeric', 
       month: 'long', 
