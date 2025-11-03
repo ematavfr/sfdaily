@@ -88,9 +88,14 @@ cd ..
 # Affiche un guide interactif pour traiter avec Agent MCP
 ./sfdaily process 2025-11-01
 
+# Avec heure spécifique (si plusieurs newsletters pour la même date)
+./sfdaily process 2025-11-02 23:05
+
 # Ou avec fichier HTML (traitement manuel partiel)
 ./sfdaily process 2025-11-01 /path/to/newsletter.html
 ```
+
+**Note :** Si plusieurs newsletters Self Daily existent pour une même date (envoyées à des heures différentes), utilisez l'heure `HH:MM` pour cibler une newsletter spécifique.
 
 ⚠️ **Traitement automatisé complet** : Utilisez l'agent MCP dans Cursor (voir prompt dans le guide affiché ci-dessus ou [AGENT_GUIDE.md](AGENT_GUIDE.md)).
 

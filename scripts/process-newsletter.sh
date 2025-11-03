@@ -1,6 +1,7 @@
 #!/bin/bash
 # Script pour traiter une newsletter Self Daily
-# Usage: ./scripts/process-newsletter.sh 2025-11-01
+# Usage: ./scripts/process-newsletter.sh 2025-11-01 [HH:MM]
+# Exemple: ./scripts/process-newsletter.sh 2025-11-02 23:05
 
 set -e
 
@@ -14,12 +15,14 @@ NC='\033[0m' # No Color
 # Check if date parameter is provided
 if [ -z "$1" ]; then
     echo -e "${RED}✗ Error: Date parameter is required${NC}"
-    echo "Usage: $0 YYYY-MM-DD"
+    echo "Usage: $0 YYYY-MM-DD [HH:MM]"
     echo "Example: $0 2025-11-01"
+    echo "Example: $0 2025-11-02 23:05"
     exit 1
 fi
 
 DATE=$1
+TIME="$2"
 
 # Validate date format
 if ! [[ $DATE =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
@@ -28,12 +31,28 @@ if ! [[ $DATE =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
     exit 1
 fi
 
+# Validate time format if provided
+if [ -n "$TIME" ]; then
+    if ! [[ $TIME =~ ^[0-9]{2}:[0-9]{2}$ ]]; then
+        echo -e "${RED}✗ Error: Invalid time format${NC}"
+        echo "Time must be in format HH:MM (24-hour format)"
+        echo "Example: 23:05"
+        exit 1
+    fi
+fi
+
 echo -e "${BLUE}╔═══════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║   SELF DAILY NEWSLETTER PROCESSOR                           ║${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
-echo -e "${YELLOW}📅 Date: ${DATE}${NC}"
+if [ -n "$TIME" ]; then
+    echo -e "${YELLOW}📅 Date: ${DATE} à ${TIME}${NC}"
+else
+    echo -e "${YELLOW}📅 Date: ${DATE}${NC}"
+    echo -e "${BLUE}ℹ️  Note: Sans heure spécifiée, la première newsletter trouvée sera utilisée${NC}"
+    echo -e "${BLUE}   Pour une newsletter spécifique, utilisez: ./sfdaily process ${DATE} HH:MM${NC}"
+fi
 echo ""
 
 echo -e "${BLUE}ℹ️  Ce script vous guide pour traiter la newsletter avec Agent MCP${NC}"
@@ -46,9 +65,21 @@ echo ""
 echo "Dans Cursor Chat, copiez et collez ce prompt :"
 echo ""
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo "Process the Self Daily newsletter for ${DATE}:"
+if [ -n "$TIME" ]; then
+    echo "Process the Self Daily newsletter for ${DATE} at ${TIME}:"
+    echo ""
+    echo "1. Use Gmail MCP to fetch the newsletter from \"Self Daily\""
+    echo "   - Filter by date ${DATE} and time around ${TIME} (UTC or local time)"
+    echo "   - Search for emails received at that specific time"
+    echo "   - Query example: from:\"Self Daily\" subject:\"${DATE}\" OR subject containing keywords from that time"
+else
+    echo "Process the Self Daily newsletter for ${DATE}:"
+    echo ""
+    echo "1. Use Gmail MCP to fetch the newsletter from \"Self Daily\""
+    echo "   - Filter by date ${DATE}"
+    echo "   - If multiple newsletters exist for this date, process the first one found"
+fi
 echo ""
-echo "1. Use Gmail MCP to fetch the newsletter from \"Self Daily\""
 echo "2. Parse the HTML to find all article titles and READ MORE links"
 echo "3. For each article:"
 echo "   - Use Firecrawl to scrape the article content"

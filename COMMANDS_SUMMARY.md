@@ -2,6 +2,8 @@
 
 ## 🎯 Commandes Principales
 
+⚠️ **Note importante** : Il peut y avoir plusieurs newsletters Self Daily pour une même date (envoyées à des heures différentes). Dans ce cas, utilisez `./sfdaily process YYYY-MM-DD HH:MM` pour cibler une newsletter spécifique.
+
 ### Agent MCP (Automatisation Complète) ⭐
 
 **Utilisation** : Via Cursor Chat avec `AGENT_GUIDE.md`
@@ -30,6 +32,9 @@
 ```bash
 # Traiter une newsletter (affiche le guide)
 ./sfdaily process 2025-11-01
+
+# Avec heure spécifique (si plusieurs newsletters par date)
+./sfdaily process 2025-11-02 23:05
 
 # Statistiques globales
 ./sfdaily stats
@@ -104,6 +109,7 @@ database/
 | Besoin | Commande |
 |--------|----------|
 | Traiter une newsletter | `./sfdaily process YYYY-MM-DD` → Guide |
+| Newsletter spécifique (avec heure) | `./sfdaily process YYYY-MM-DD HH:MM` → Guide |
 | Agent MCP complet | Voir prompt dans le guide ou [AGENT_GUIDE.md](AGENT_GUIDE.md) |
 | Voir statistiques | `./sfdaily stats` |
 | Lister articles | `./sfdaily list [date]` |

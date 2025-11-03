@@ -7,10 +7,22 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Special handling for 'process' command without HTML file
-if [ "$1" == "process" ] && [ -n "$2" ] && [ -z "$3" ]; then
-  # No HTML file provided, redirect to guide script
-  "${SCRIPT_DIR}/scripts/process-newsletter.sh" "$2"
-  exit 0
+if [ "$1" == "process" ] && [ -n "$2" ]; then
+  # Check if $3 is an hour (HH:MM format) or a file path
+  if [ -z "$3" ] || [[ "$3" =~ ^[0-9]{2}:[0-9]{2}$ ]]; then
+    # Date only or date + hour provided, redirect to guide script
+    "${SCRIPT_DIR}/scripts/process-newsletter.sh" "$2" "$3"
+    exit 0
+  elif [ -f "$3" ] || [[ "$3" =~ ^/ ]] || [[ "$3" =~ ^\./ ]] || [[ "$3" =~ ^\.\./ ]]; then
+    # HTML file provided, use CLI with file
+    # Continue to CLI below
+    :
+  else
+    # Unknown format, show help
+    echo "Usage: ./sfdaily process YYYY-MM-DD [HH:MM]"
+    echo "   or: ./sfdaily process YYYY-MM-DD /path/to/html"
+    exit 1
+  fi
 fi
 
 # Check if running from backend container
